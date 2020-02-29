@@ -25,7 +25,7 @@
   
   
   <link rel="stylesheet" href="//at.alicdn.com/t/font_1038733_0xvrvpg9c0r.css">
-  <link rel="stylesheet" href="/css/style.css?v=1575445905419">
+  <link rel="stylesheet" href="/css/style.css?v=1582957294447">
   <script type="text/javascript" src="/js/clicklove.js"></script>
 </head>
 
@@ -50,8 +50,8 @@
         </a>
     </div>
     <div class="nexmoe-count">
-        <div><span>文章</span>1</div>
-        <div><span>标签</span>5</div>
+        <div><span>文章</span>2</div>
+        <div><span>标签</span>6</div>
         <div><span>分类</span>0</div>
     </div>
     <ul class="nexmoe-list mdui-list" mdui-collapse="{accordion: true}">
@@ -107,7 +107,7 @@
   <div class="nexmoe-widget-wrap">
     <h3 class="nexmoe-widget-title">标签云</h3>
     <div id="randomtagcloud" class="nexmoe-widget tagcloud">
-      <a href="/tags/github/" style="font-size: 10px;">github</a> <a href="/tags/gitment/" style="font-size: 10px;">gitment</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/live2d/" style="font-size: 10px;">live2d</a> <a href="/tags/nodejs/" style="font-size: 10px;">nodejs</a>
+      <a href="/tags/OpenFOAM/" style="font-size: 10px;">OpenFOAM</a> <a href="/tags/github/" style="font-size: 10px;">github</a> <a href="/tags/gitment/" style="font-size: 10px;">gitment</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/live2d/" style="font-size: 10px;">live2d</a> <a href="/tags/nodejs/" style="font-size: 10px;">nodejs</a>
     </div>
     
   </div>
@@ -117,7 +117,7 @@
   <div class="nexmoe-widget-wrap">
     <h3 class="nexmoe-widget-title">文章归档</h3>
     <div class="nexmoe-widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">十二月 2019</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">十二月 2019</a></li></ul>
     </div>
   </div>
 
@@ -130,6 +130,10 @@
       <ul>
         
           <li>
+            <a href="/2020/02/29/LumpedMassMethodMooring/">LumpedMassMethodMooring</a>
+          </li>
+        
+          <li>
             <a href="/2019/12/03/establish/">搭建过程</a>
           </li>
         
@@ -140,7 +144,7 @@
   
 </aside>
     <div class="nexmoe-copyright">
-        &copy; 2019 Zhiwei He
+        &copy; 2020 Zhiwei He
         Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
         & <a href="https://nexmoe.com/hexo-theme-nexmoe.html" target="_blank">Nexmoe</a>
     </div>
@@ -149,6 +153,509 @@
   <div id="nexmoe-content">
     <div class="nexmoe-primary">
         <section class="nexmoe-posts" id="brand-waterfall">
+    
+    <div class="nexmoe-post">
+        <a href="/2020/02/29/LumpedMassMethodMooring/">
+            <div class="nexmoe-post-cover mdui-ripple"> 
+                
+                <img src="https://openfoam.com/img/OpenFOAMtrans.png" alt="LumpedMassMethodMooring">
+                
+                <h1>LumpedMassMethodMooring</h1>
+            </div>
+        </a>
+        <div class="nexmoe-post-meta">
+            <a><i class="nexmoefont icon-calendar-fill"></i>2020年02月29日</a>
+            <a><i class="nexmoefont icon-areachart"></i>2.5k 字</a>
+            <a><i class="nexmoefont icon-time-circle-fill"></i>大概 14 分钟</a>
+            
+            
+                <a class="nexmoefont icon-tag-fill -link" href="/tags/OpenFOAM/" rel="tag">OpenFOAM</a>
+            
+        </div>
+        <article>
+            
+            <h1 id="基于集中质量法的锚链力算法"><a href="#基于集中质量法的锚链力算法" class="headerlink" title="基于集中质量法的锚链力算法"></a>基于集中质量法的锚链力算法</h1><p>本文代码来自“系泊载液浮体水动力特性的数值及试验研究”<a href="https://kns.cnki.net/KCMS/detail/detail.aspx?dbcode=CMFD&dbname=CMFD201901&filename=1018869021.nh&v=MTgxNDR1eFlTN0RoMVQzcVRyV00xRnJDVVI3cWZaZVJtRnl2Z1U3L05WRjI2RnJ1K0Y5SE9ycEViUElSOGVYMUw=" target="_blank" rel="noopener">于含</a></p>
+<p>本文记录编译过程以及字典文件的编写</p>
+<p>1.在<code>/opt/OpenFOAM/OpenFOAM-v1712/src/sixDoFRigidBodyMotion/sixDoFRigidBodyMotion/restraints</code>（本文<code>OpenFOAM</code>安装位置为<code>/opt</code>）中创建文件夹<code>LumpedMassMethodMooring</code>，在该文件夹中建立两个文件<code>LumpedMassMethodMooring.C</code>与<code>LumpedMassMethodMooring.H</code></p>
+<p><strong>以下为<code>LumpedMassMethodMooring.C</code>具体内容</strong></p>
+<pre><code class="c++">/*---------------------------LumpedMassMethodMooring.C--------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     |
+    \\  /    A nd           | Copyright held by original author
+     \\/     M anipulation  |
+----------------------------------------------------------------------------------
+License
+    This file is part of OpenFOAM.
+
+    OpenFOAM is free software; you can redistribute it and/or modify it
+    under the terms of the GNU General Public License as published by the
+    Free Software Foundation; either version 2 of the License, or (at your
+    option) any later version.
+
+    OpenFOAM is distributed in the hope that it will be useful, but WITHOUT
+    ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+    FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+    for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with OpenFOAM; if not, write to the Free Software Foundation,
+    Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
+
+Description
+    于含 系泊载液浮体水动力特性的数值及试验研究
+    提供的基于集中质量法的锚链力算法
+
+\*------------------------------------------------------------------------------*/
+
+#include &quot;LumpedMassMethodMooring.H&quot;
+#include &quot;addToRunTimeSelectionTable.H&quot;
+#include &quot;sixDoFRigidBodyMotion.H&quot;
+#include &quot;DynamicList.H&quot;
+
+// * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * * * * * //
+
+namespace Foam
+{
+namespace sixDoFRigidBodyMotionRestraints
+{
+    defineTypeNameAndDebug (LumpedMassMethodMooring, 0);
+    addToRunTimeSelectionTable
+    (
+        sixDoFRigidBodyMotionRestraint,
+        LumpedMassMethodMooring,
+        dictionary
+    );
+}
+}
+
+// * * * * * * * * * * * * * * Constructors * * * * * * * * * * * * * * * * * * //
+
+Foam::sixDoFRigidBodyMotionRestraints::LumpedMassMethodMooring::LumpedMassMethodMooring
+(
+    const word&amp; name,
+    const dictionary&amp; sDoFRBMRDict
+)
+:
+    sixDoFRigidBodyMotionRestraint(name, sDoFRBMRDict),
+    anchor_(),
+    refAttachmentPt_(),
+    cableLength_(),
+    totalMass_(),
+    EA_(),
+    n_(),
+    g_()
+{
+    read(sDoFRBMRDict);
+    catenaryCableLength = cableLength_;
+    catenaryTotalMass = totalMass_ ;
+    supportForcePercent= 0;
+    firstPieceSeita = 0.0001;
+    Ttotal = 0;
+    Th =0;
+    Tv =0;
+    calculatedZ=0;
+    calculatedX=0;
+    mooringstate=-1;
+}
+
+// * * * * * * * * * * * * * * * Destructor * * * * * * * * * * * * * * * * * * //
+
+Foam::sixDoFRigidBodyMotionRestraints::LumpedMassMethodMooring::~LumpedMassMethodMooring()
+{}
+
+// * * * * * * * * * * * * * * Member Functions * * * * * * * * * * * * * * * * //
+
+void Foam::sixDoFRigidBodyMotionRestraints::LumpedMassMethodMooring::restrain
+(
+    const sixDoFRigidBodyMotion&amp; motion,
+    vector&amp; restraintPosition,
+    vector&amp; restraintForce,
+    vector&amp; restraintMoment
+) const
+{
+    restraintPosition = motion.transform(refAttachmentPt_);
+    restraintMoment = vector::zero;
+    restraintForce = vector::zero;
+    scalar direct1=(restraintPosition[0]==anchor_[0]?0:(restraintPosition[0]-anchor_[0]&gt;0?-1:1));
+    scalar direct2=(restraintPosition[1]==anchor_[1]?0:(restraintPosition[1]-anchor_[1]&gt;0?-1:1));
+    scalar x = mag(anchor_[0] - restraintPosition[0]);
+    scalar h = mag(anchor_[1] - restraintPosition[1]);
+    scalar a1=999999;
+    scalar a2=0.0001;
+    scalar toleranceA=0.001;
+    while (Foam::mag(((a1+a2)/2)*(Foam::cosh(x/((a1+a2)/2))-1)-h) &gt; toleranceA)
+    {
+        scalar y3 = ((a1+a2)/2)*(Foam::cosh(x/((a1+a2)/2))-1);
+        if(y3&lt;h)
+        {
+            a1= (a1+a2)/2;
+        }
+        if(y3&gt;h)
+        {
+            a2 = (a1+a2)/2;
+        }
+    }
+    scalar a=(a1+a2)/2;
+    scalar maxCatenarycableLength = a * Foam::sinh (x/a);
+    vector r = restraintPosition - anchor_;
+    scalar strightLineLength = mag(r);
+
+    if (cableLength_ &gt;= maxCatenarycableLength)
+    {
+        mooringstate=1;//The first state of the mooring chain, which is mentioned in section 4.1
+        mooringstate1loopingZ:
+
+            calculatingZX();
+            while (calculatedZ &lt; h)
+            {
+                addSeita();
+                calculatingZX();
+            }
+            while (calculatedX &gt; x)
+            {
+                calculatingFromNextPiece();
+                goto mooringstate1loopingZ;
+            }
+
+        restraintForce[0]=direct1*Th;
+        restraintForce[1]=direct2*Tv;
+        restraintForce[2]=0;
+
+    }
+
+    else if (maxCatenarycableLength &gt; cableLength_ &amp;&amp; cableLength_ &gt;= strightLineLength)
+    {
+        mooringstate=2; //The second state of the mooring chain, which is mentioned in section 4.1
+        mooringstate2loopingZ:
+
+            calculatingZX();
+            while (calculatedZ &lt; h)
+            {
+                addSeita();
+                calculatingZX();
+            }
+            while (calculatedX &lt; x)
+            {
+                changeSupportForcePercent();
+                goto mooringstate2loopingZ;
+            }
+
+        restraintForce[0]=direct1*Th;
+        restraintForce[1]=direct2*Tv;
+        restraintForce[2]=0;
+    }
+
+    else if(strightLineLength &gt; cableLength_)
+    {
+        mooringstate=3; //The third state of the mooring chain, which is mentioned in section 4.1
+        r/= (strightLineLength + VSMALL);
+        scalar elongation = strightLineLength - cableLength_;
+        scalar stiffness = EA_ / cableLength_;
+        restraintForce = -stiffness * elongation * r;
+        restraintForce[2]=0;
+    }
+
+    if (motion.report())
+    {
+        Info&lt;&lt; &quot; magForce : &quot;&lt;&lt;mag(restraintForce)
+            //&lt;&lt; &quot; mooringstate: &quot; &lt;&lt; mooringstate
+            //&lt;&lt; &quot; restraintPosition: &quot; &lt;&lt;restraintPosition
+            //&lt;&lt; &quot; anchor: &quot; &lt;&lt;anchor_
+            //&lt;&lt; &quot; seita &quot; &lt;&lt;firstPieceSeita
+            //&lt;&lt; &quot; calculatedZ &quot; &lt;&lt;calculatedZ
+            //&lt;&lt; &quot; calculatedX &quot; &lt;&lt;calculatedX
+            &lt;&lt; endl;
+    }
+    catenaryCableLength = cableLength_;
+    catenaryTotalMass = totalMass_ ;
+    supportForcePercent= 0;
+    firstPieceSeita = 0.0001;
+    Ttotal = 0;
+    Th =0;
+    Tv =0;
+    calculatedZ=0;
+    calculatedX=0;
+    mooringstate=-1;
+}
+
+void Foam::sixDoFRigidBodyMotionRestraints::LumpedMassMethodMooring::calculatingZX()const
+{
+    scalar l = catenaryCableLength / n_;
+    scalar verticalForce = (catenaryTotalMass/n_/2 * g_)*(1-supportForcePercent) ;
+    //the horizontalforce in the first piece which also in every piece
+    scalar horizontalForce = verticalForce/Foam::tan(firstPieceSeita);
+    scalar seita = firstPieceSeita;
+    scalar totalForce = verticalForce/Foam::sin(seita);
+    scalar finalZ=0;
+    scalar finalX=cableLength_ - catenaryCableLength;
+
+    finalZ = finalZ + l*(1+totalForce/EA_)*Foam::sin(seita);
+    finalX = finalX + l*(1+totalForce/EA_)*Foam::cos(seita);
+
+    for (int i=1;i&lt;=n_ - 1; i++)
+    {
+        //calculate the vertical force in each piece
+        verticalForce = verticalForce + catenaryTotalMass * g_ / n_ ;
+        //calculate the angle between each cable piece and horizontal
+        seita = Foam::atan(verticalForce/horizontalForce) ;
+        //calculate total force in each piece
+        totalForce = verticalForce/Foam::sin(seita);
+        finalZ = finalZ + l*(1+totalForce/EA_)*Foam::sin(seita);
+        finalX = finalX + l*(1+totalForce/EA_)*Foam::cos(seita);
+    }
+    calculatedZ=finalZ;
+    calculatedX=finalX;
+    Ttotal=totalForce;
+    Tv=verticalForce;
+    Th=horizontalForce;
+}
+
+void Foam::sixDoFRigidBodyMotionRestraints::LumpedMassMethodMooring::addSeita()const
+{
+    firstPieceSeita += 0.0001;
+}
+
+void Foam::sixDoFRigidBodyMotionRestraints::LumpedMassMethodMooring::calculatingFromNextPiece()const
+{
+    catenaryCableLength = catenaryCableLength - catenaryCableLength/n_ ;
+    catenaryTotalMass = catenaryTotalMass - catenaryTotalMass/n_ ;
+}
+
+void Foam::sixDoFRigidBodyMotionRestraints::LumpedMassMethodMooring::changeSupportForcePercent()const
+{
+    supportForcePercent = supportForcePercent - 1;
+}
+
+bool Foam::sixDoFRigidBodyMotionRestraints::LumpedMassMethodMooring::read
+(
+    const dictionary&amp; sDoFRBMRDict
+)
+{
+    sixDoFRigidBodyMotionRestraint::read(sDoFRBMRDict);
+    sDoFRBMRCoeffs_.lookup(&quot;anchor&quot;) &gt;&gt; anchor_;
+    sDoFRBMRCoeffs_.lookup(&quot;refAttachmentPt&quot;) &gt;&gt; refAttachmentPt_;
+    sDoFRBMRCoeffs_.lookup(&quot;cableLength&quot;) &gt;&gt; cableLength_;
+    sDoFRBMRCoeffs_.lookup(&quot;totalMass&quot;) &gt;&gt; totalMass_;
+    sDoFRBMRCoeffs_.lookup(&quot;EA&quot;) &gt;&gt; EA_;
+    sDoFRBMRCoeffs_.lookup(&quot;n&quot;) &gt;&gt; n_;
+    sDoFRBMRCoeffs_.lookup(&quot;g&quot;) &gt;&gt; g_;
+    return true;
+}
+
+void Foam::sixDoFRigidBodyMotionRestraints::LumpedMassMethodMooring::write
+(
+    Ostream&amp; os
+) const
+{
+    os.writeKeyword(&quot;anchor&quot;)
+        &lt;&lt; anchor_ &lt;&lt; token::END_STATEMENT &lt;&lt; nl;
+    os.writeKeyword(&quot;refAttachmentPt&quot;)
+        &lt;&lt; refAttachmentPt_ &lt;&lt; token::END_STATEMENT &lt;&lt; nl;
+    os.writeKeyword(&quot;cableLength&quot;)
+        &lt;&lt; cableLength_ &lt;&lt; token::END_STATEMENT &lt;&lt; nl;
+    os.writeKeyword(&quot;totalMass&quot;)
+        &lt;&lt; totalMass_ &lt;&lt; token::END_STATEMENT &lt;&lt; nl;
+    os.writeKeyword(&quot;EA&quot;)
+        &lt;&lt; EA_ &lt;&lt; token::END_STATEMENT &lt;&lt; nl;
+    os.writeKeyword(&quot;n&quot;)
+        &lt;&lt; n_ &lt;&lt; token::END_STATEMENT &lt;&lt; nl;
+    os.writeKeyword(&quot;g&quot;)
+        &lt;&lt; g_ &lt;&lt; token::END_STATEMENT &lt;&lt; nl;
+}
+
+// **************************************************************************** //</code></pre>
+<p><strong>以下为<code>LumpedMassMethodMooring.H</code>具体内容</strong></p>
+<pre><code class="c++">/*------------------------LumpedMassMethodMooring.H-----------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     |
+    \\  /    A nd           | Copyright held by original author
+     \\/     M anipulation  |
+----------------------------------------------------------------------------------
+License
+    This file is part of OpenFOAM.
+    OpenFOAM is free software; you can redistribute it and/or modify it
+    under the terms of the GNU General Public License as published by the
+    Free Software Foundation; either version 2 of the License, or (at your
+    option) any later version.
+
+    OpenFOAM is distributed in the hope that it will be useful, but WITHOUT
+    ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+    FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+    for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with OpenFOAM; if not, write to the Free Software Foundation,
+    Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
+
+Description
+    于含 系泊载液浮体水动力特性的数值及试验研究
+    提供的基于集中质量法的锚链力算法
+\*------------------------------------------------------------------------------*/
+#ifndef LumpedMassMethodMooring_H
+#define LumpedMassMethodMooring_H
+
+#include &quot;sixDoFRigidBodyMotionRestraint.H&quot;
+#include &quot;point.H&quot;
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *  //
+namespace Foam
+{
+namespace sixDoFRigidBodyMotionRestraints
+{
+/*------------------------------------------------------------------------------*\
+            Class LumpedMassMethodMooring Declaration
+\*------------------------------------------------------------------------------*/
+
+class LumpedMassMethodMooring
+:
+        public sixDoFRigidBodyMotionRestraint
+{
+        // Private data
+
+    //Anchor point, where the spring is attached to an immovable
+    // object
+    point anchor_;
+
+    //- Reference point of attachment to the solid body
+    point refAttachmentPt_;
+
+    //- Total length of the mooring chain or cable
+    scalar cableLength_;
+
+    //- Total mass of the mooring chain or cable
+    scalar totalMass_;
+
+    //- The tensile stiffness of the mooring chain or cable
+    scalar EA_;
+
+    //- The number of segments
+    scalar n_;
+
+    //- The acceleration of gravity
+    scalar g_;
+
+    //- The cable length without lying on the sea bed, AKA the pendulous length
+    mutable scalar catenaryCableLength;
+
+    //- The cable mass without lying on the sea bed, AKA the pendulous mass
+    mutable scalar catenaryTotalMass;
+
+    //- The vertical mooring force of the sea bed acting on the mooring cable
+    mutable scalar supportForcePercent;
+
+    //- The intersection angle between the sea bed and mooring cable
+    mutable scalar firstPieceSeita;
+
+    //- The calculated value of the vertical position of the top side of the mooring cable
+    mutable scalar calculatedZ;
+
+    //- The calculated value of the horizontal position of the top side of the mooring cable
+    mutable scalar calculatedX;
+
+    //- The horizontal component of the mooring force
+    mutable scalar Th;
+
+    //- The vertical component of the mooring force
+    mutable scalar Tv;
+
+    //- The mooring force
+    mutable scalar Ttotal;
+
+    //- The state of the mooring cable
+    mutable scalar mooringstate;
+public:
+        //- Runtime type information
+        TypeName(&quot;LumpedMassMethodMooring&quot;);
+
+        // Constructors
+
+    //- Construct from components
+    LumpedMassMethodMooring
+    (
+        const word&amp; name,
+        const dictionary&amp; sDoFRBMRDict
+    );
+
+    //- Construct and return a clone
+    virtual autoPtr&lt;sixDoFRigidBodyMotionRestraint&gt; clone() const
+    {
+        return autoPtr&lt;sixDoFRigidBodyMotionRestraint&gt;
+        (
+        new LumpedMassMethodMooring(*this)
+        );
+    }
+
+        //- Destructor
+        virtual ~LumpedMassMethodMooring();
+
+        // Member Functions
+    //- Calculate the restraint position, force and moment.
+    // Global reference frame vectors.
+    virtual void restrain
+    (
+        const sixDoFRigidBodyMotion&amp; motion,
+        vector&amp; restraintPosition,
+        vector&amp; restraintForce,
+        vector&amp; restraintMoment
+    ) const;
+
+        //- Update properties from given dictionary
+        virtual bool read(const dictionary&amp; sDoFRBMRCoeff);
+
+        //- Write
+        virtual void write(Ostream&amp;) const;
+
+        void calculatingZX()const;
+
+        void addSeita()const;
+
+        void calculatingFromNextPiece()const;
+
+        void changeSupportForcePercent()const;
+
+};
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *  //
+
+} // End namespace solidBodyMotionFunctions
+} // End namespace Foam
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *  //
+
+#endif
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *  //</code></pre>
+<p>2.修改<code>/opt/openfoam30/src/sixDoFRigidBodyMotion/Make/</code>文件夹中<code>files</code>文件</p>
+<p>在<code>restraints</code>列中添加<code>$(restraints)/LumpedMassMethodMooring/LumpedMassMethodMooring.C</code></p>
+<p>3.终端进入<code>/opt/openfoam30/src/sixDoFRigidBodyMotion/</code>目录，先进入OpenFOAM1712环境，再输入<code>wmake</code>开始编译。</p>
+<p>注意输出结果，观察是否有错误发生。下文为此次编译成功的输出结果。</p>
+<pre><code class="shell">yuno@ubuntu:/opt/OpenFOAM/OpenFOAM-v1712/src/sixDoFRigidBodyMotion$ of17
+yuno@ubuntu:/opt/OpenFOAM/OpenFOAM-v1712/src/sixDoFRigidBodyMotion$ wmake
+wmakeLnInclude: linking include files to ./lnInclude
+Making dependency list for source file LumpedMassMethodMooring.C
+g++ -std=c++11 -m64 -DOPENFOAM_PLUS=1712 -Dlinux64 -DWM_ARCH_OPTION=64 -DWM_DP -DWM_LABEL_SIZE=32 -Wall -Wextra -Wold-style-cast -Wnon-virtual-dtor -Wno-unused-parameter -Wno-invalid-offsetof -Wno-attributes -O3  -DNoRepository -ftemplate-depth-100 -I/opt/OpenFOAM/OpenFOAM-v1712/src/finiteVolume/lnInclude -I/opt/OpenFOAM/OpenFOAM-v1712/src/fileFormats/lnInclude -I/opt/OpenFOAM/OpenFOAM-v1712/src/meshTools/lnInclude -I/opt/OpenFOAM/OpenFOAM-v1712/src/functionObjects/forces/lnInclude -I/opt/OpenFOAM/OpenFOAM-v1712/src/dynamicMesh/lnInclude -IlnInclude -I. -I/opt/OpenFOAM/OpenFOAM-v1712/src/OpenFOAM/lnInclude -I/opt/OpenFOAM/OpenFOAM-v1712/src/OSspecific/POSIX/lnInclude   -fPIC -c sixDoFRigidBodyMotion/restraints/LumpedMassMethodMooring/LumpedMassMethodMooring.C -o /opt/OpenFOAM/OpenFOAM-v1712/build/linux64GccDPInt32Opt/src/sixDoFRigidBodyMotion/sixDoFRigidBodyMotion/restraints/LumpedMassMethodMooring/LumpedMassMethodMooring.o
+g++ -std=c++11 -m64 -DOPENFOAM_PLUS=1712 -Dlinux64 -DWM_ARCH_OPTION=64 -DWM_DP -DWM_LABEL_SIZE=32 -Wall -Wextra -Wold-style-cast -Wnon-virtual-dtor -Wno-unused-parameter -Wno-invalid-offsetof -Wno-attributes -O3  -DNoRepository -ftemplate-depth-100 -I/opt/OpenFOAM/OpenFOAM-v1712/src/finiteVolume/lnInclude -I/opt/OpenFOAM/OpenFOAM-v1712/src/fileFormats/lnInclude -I/opt/OpenFOAM/OpenFOAM-v1712/src/meshTools/lnInclude -I/opt/OpenFOAM/OpenFOAM-v1712/src/functionObjects/forces/lnInclude -I/opt/OpenFOAM/OpenFOAM-v1712/src/dynamicMesh/lnInclude -IlnInclude -I. -I/opt/OpenFOAM/OpenFOAM-v1712/src/OpenFOAM/lnInclude -I/opt/OpenFOAM/OpenFOAM-v1712/src/OSspecific/POSIX/lnInclude   -fPIC -shared -Xlinker --add-needed -Xlinker --no-as-needed /opt/OpenFOAM/OpenFOAM-v1712/build/linux64GccDPInt32Opt/src/sixDoFRigidBodyMotion/sixDoFRigidBodyMotion/sixDoFRigidBodyMotion.o /opt/OpenFOAM/OpenFOAM-v1712/build/linux64GccDPInt32Opt/src/sixDoFRigidBodyMotion/sixDoFRigidBodyMotion/sixDoFRigidBodyMotionIO.o /opt/OpenFOAM/OpenFOAM-v1712/build/linux64GccDPInt32Opt/src/sixDoFRigidBodyMotion/sixDoFRigidBodyMotion/sixDoFRigidBodyMotionState.o /opt/OpenFOAM/OpenFOAM-v1712/build/linux64GccDPInt32Opt/src/sixDoFRigidBodyMotion/sixDoFRigidBodyMotion/sixDoFRigidBodyMotionStateIO.o /opt/OpenFOAM/OpenFOAM-v1712/build/linux64GccDPInt32Opt/src/sixDoFRigidBodyMotion/sixDoFRigidBodyMotion/restraints/sixDoFRigidBodyMotionRestraint/sixDoFRigidBodyMotionRestraint.o /opt/OpenFOAM/OpenFOAM-v1712/build/linux64GccDPInt32Opt/src/sixDoFRigidBodyMotion/sixDoFRigidBodyMotion/restraints/sixDoFRigidBodyMotionRestraint/sixDoFRigidBodyMotionRestraintNew.o /opt/OpenFOAM/OpenFOAM-v1712/build/linux64GccDPInt32Opt/src/sixDoFRigidBodyMotion/sixDoFRigidBodyMotion/restraints/linearAxialAngularSpring/linearAxialAngularSpring.o /opt/OpenFOAM/OpenFOAM-v1712/build/linux64GccDPInt32Opt/src/sixDoFRigidBodyMotion/sixDoFRigidBodyMotion/restraints/linearSpring/linearSpring.o /opt/OpenFOAM/OpenFOAM-v1712/build/linux64GccDPInt32Opt/src/sixDoFRigidBodyMotion/sixDoFRigidBodyMotion/restraints/sphericalAngularSpring/sphericalAngularSpring.o /opt/OpenFOAM/OpenFOAM-v1712/build/linux64GccDPInt32Opt/src/sixDoFRigidBodyMotion/sixDoFRigidBodyMotion/restraints/tabulatedAxialAngularSpring/tabulatedAxialAngularSpring.o /opt/OpenFOAM/OpenFOAM-v1712/build/linux64GccDPInt32Opt/src/sixDoFRigidBodyMotion/sixDoFRigidBodyMotion/restraints/linearDamper/linearDamper.o /opt/OpenFOAM/OpenFOAM-v1712/build/linux64GccDPInt32Opt/src/sixDoFRigidBodyMotion/sixDoFRigidBodyMotion/restraints/sphericalAngularDamper/sphericalAngularDamper.o /opt/OpenFOAM/OpenFOAM-v1712/build/linux64GccDPInt32Opt/src/sixDoFRigidBodyMotion/sixDoFRigidBodyMotion/restraints/LumpedMassMethodMooring/LumpedMassMethodMooring.o /opt/OpenFOAM/OpenFOAM-v1712/build/linux64GccDPInt32Opt/src/sixDoFRigidBodyMotion/sixDoFRigidBodyMotion/constraints/sixDoFRigidBodyMotionConstraint/sixDoFRigidBodyMotionConstraint.o /opt/OpenFOAM/OpenFOAM-v1712/build/linux64GccDPInt32Opt/src/sixDoFRigidBodyMotion/sixDoFRigidBodyMotion/constraints/sixDoFRigidBodyMotionConstraint/sixDoFRigidBodyMotionConstraintNew.o /opt/OpenFOAM/OpenFOAM-v1712/build/linux64GccDPInt32Opt/src/sixDoFRigidBodyMotion/sixDoFRigidBodyMotion/constraints/axis/sixDoFRigidBodyMotionAxisConstraint.o /opt/OpenFOAM/OpenFOAM-v1712/build/linux64GccDPInt32Opt/src/sixDoFRigidBodyMotion/sixDoFRigidBodyMotion/constraints/line/sixDoFRigidBodyMotionLineConstraint.o /opt/OpenFOAM/OpenFOAM-v1712/build/linux64GccDPInt32Opt/src/sixDoFRigidBodyMotion/sixDoFRigidBodyMotion/constraints/orientation/sixDoFRigidBodyMotionOrientationConstraint.o /opt/OpenFOAM/OpenFOAM-v1712/build/linux64GccDPInt32Opt/src/sixDoFRigidBodyMotion/sixDoFRigidBodyMotion/constraints/plane/sixDoFRigidBodyMotionPlaneConstraint.o /opt/OpenFOAM/OpenFOAM-v1712/build/linux64GccDPInt32Opt/src/sixDoFRigidBodyMotion/sixDoFRigidBodyMotion/constraints/point/sixDoFRigidBodyMotionPointConstraint.o /opt/OpenFOAM/OpenFOAM-v1712/build/linux64GccDPInt32Opt/src/sixDoFRigidBodyMotion/pointPatchFields/derived/sixDoFRigidBodyDisplacement/sixDoFRigidBodyDisplacementPointPatchVectorField.o /opt/OpenFOAM/OpenFOAM-v1712/build/linux64GccDPInt32Opt/src/sixDoFRigidBodyMotion/pointPatchFields/derived/uncoupledSixDoFRigidBodyDisplacement/uncoupledSixDoFRigidBodyDisplacementPointPatchVectorField.o /opt/OpenFOAM/OpenFOAM-v1712/build/linux64GccDPInt32Opt/src/sixDoFRigidBodyMotion/sixDoFRigidBodyMotionSolver/sixDoFRigidBodyMotionSolver.o /opt/OpenFOAM/OpenFOAM-v1712/build/linux64GccDPInt32Opt/src/sixDoFRigidBodyMotion/sixDoFSolvers/sixDoFSolver/sixDoFSolver.o /opt/OpenFOAM/OpenFOAM-v1712/build/linux64GccDPInt32Opt/src/sixDoFRigidBodyMotion/sixDoFSolvers/sixDoFSolver/newSixDoFSolver.o /opt/OpenFOAM/OpenFOAM-v1712/build/linux64GccDPInt32Opt/src/sixDoFRigidBodyMotion/sixDoFSolvers/symplectic/symplectic.o /opt/OpenFOAM/OpenFOAM-v1712/build/linux64GccDPInt32Opt/src/sixDoFRigidBodyMotion/sixDoFSolvers/CrankNicolson/CrankNicolson.o /opt/OpenFOAM/OpenFOAM-v1712/build/linux64GccDPInt32Opt/src/sixDoFRigidBodyMotion/sixDoFSolvers/Newmark/Newmark.o -L/opt/OpenFOAM/OpenFOAM-v1712/platforms/linux64GccDPInt32Opt/lib \
+        -lmeshTools -lforces -ldynamicMesh  -o /opt/OpenFOAM/OpenFOAM-v1712/platforms/linux64GccDPInt32Opt/lib/libsixDoFRigidBodyMotion.so</code></pre>
+<p>该悬链算法的使用方法见下。</p>
+<p>1.在<code>dynamicMeshDict</code>字典文件里<code>sixDoFRigidBodyMotionCoeffs</code>子字典里<code>restraints</code>项添加参数，以下为一个例子（注释仅为源文件注释的简单翻译）</p>
+<pre><code class="c++">    restraints
+    {
+        mooringCable // 名称任意
+        {
+            sixDoFRigidBodyMotionRestraint LumpedMassMethodMooring;    //使用该算法
+            anchor          (4.5  -0.2 0.05);//该点在固定的某边界上
+            refAttachmentPt (5.8  -0.5 0.05);//该店在浮动的边界上
+            cableLength     1.4;//缆绳长度
+            totalMass       0.063541;//缆绳总质量
+            EA              1596;//弹性模量EA
+            n               500;//分段数
+            g               9.81;
+        }  
+    }</code></pre>
+
+            
+        </article>
+    </div>
     
     <div class="nexmoe-post">
         <a href="/2019/12/03/establish/">
@@ -241,7 +748,7 @@
         }
 })(window,document);</code></pre>
 <p>然后在<code>主题文件夹</code>下的<code>layout/_layout</code>配置文件里的<code>&lt;head&gt;...&lt;/head&gt;</code>标签中加入下面这一段</p>
-<p><code>&lt;script type=&quot;text/javascript&quot; src=&quot;/js/clicklove.js&quot;&gt;&lt;/script&gt;</code></p>
+<pre><code class="bash">&lt;script type=&quot;text/javascript&quot; src=&quot;/js/clicklove.js&quot;&gt;&lt;/script&gt;</code></pre>
 <h2 id="添加live2D-看板娘"><a href="#添加live2D-看板娘" class="headerlink" title="添加live2D 看板娘"></a>添加live2D 看板娘</h2><p>  说实话，这才是我最想要的功能！以前看别人网站的时候看到了萌萌的看板娘，那时就在想要是我也有一个就好了。于是趁着这次建站，终于把看板娘拿到手了！</p>
 <p>  首先感谢<a href="https://github.com/EYHN/hexo-helper-live2d/" target="_blank" rel="noopener">@EYHN</a>为live2D做的贡献，在<a href="https://github.com/EYHN/hexo-helper-live2d/blob/master/README.zh-CN.md" target="_blank" rel="noopener">https://github.com/EYHN/hexo-helper-live2d/blob/master/</a>中已经将教程写出来了，我这边就ctrl+v演示一遍。</p>
 <ol>
@@ -342,7 +849,7 @@ live2d:
 <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.15.8/build/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
 
-<script src="/js/app.js?v=1575445905422"></script>
+<script src="/js/app.js?v=1582957294450"></script>
 <script src="https://cdn.jsdelivr.net/npm/lazysizes@5.1.0/lazysizes.min.js"></script>
 
 
